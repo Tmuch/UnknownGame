@@ -1,20 +1,11 @@
 package render;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex3f;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import entities.Entity;
 
 import main.Game;
 
@@ -23,21 +14,44 @@ import world.World;
 public class RenderManager
 {
 
+	/*
+	 * This maps every renderable entity to its corresponding render class 
+	 */
 	private Map						entityRenderMap	= new HashMap();
 
+	/* Singleton locked instance of this class. 
+	 * There should only be one instance of this class
+	 * in this game environment. */
 	private static RenderManager	instance		= null;
+
+	/* Instance of the Camera class. 
+	 * TODO: This should probably be moved to be a field in the playerentity class
+	 */
 	public Camera					camInstance;
+
+	/*
+	 * This will remain null until getInstance() is called 
+	 */
 	private World					theWorld		= null;
+
+
 
 	/**
 	 * Render the world and all of the blocks within it.
 	 */
 	private void renderWorld()
 	{
+		/* Make sure that there is actually a world to render. */
 		if (theWorld == null)
 		{
 			System.out.println("There is no world to render!");
 			return;
+		}
+
+		/* Render the world */
+		for (Entity e : theWorld.getEntities())
+		{
+
 		}
 
 		glPushMatrix();
@@ -115,15 +129,24 @@ public class RenderManager
 
 	}
 
+
+	/* Render all of the Entities. This should probably just offload
+	 * the work to a class RenderEntities */
 	private void renderEntities()
 	{
 		return;
 	}
 
+
+	/**
+	 * Private constructor. Only called by getInstance()
+	 */
 	private RenderManager()
 	{
 		this.camInstance = new Camera(70, (float) Window.getWidth() / (float) Window.getHeight(), 0.3f, 1000);
 		theWorld = Game.getGameInstance().getWorld();
+
+
 		//add entities to hashmap
 		//and set their RenderManager field to 'this'
 	}
@@ -211,5 +234,11 @@ public class RenderManager
 	{
 		if (instance == null) instance = new RenderManager();
 		return instance;
+	}
+
+
+	public void renderEntity()
+	{
+
 	}
 }
