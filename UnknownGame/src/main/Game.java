@@ -1,17 +1,9 @@
 package main;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.util.ResourceLoader;
-
 import render.Camera;
 import render.Window;
-import utils.Time;
+import utils.Timer;
 import world.World;
 import static org.lwjgl.opengl.GL11.*;
 import input.InputManager;
@@ -24,7 +16,7 @@ public class Game
 	private Camera				cam;
 	volatile private boolean	isRunning;
 	private boolean				isPaused;
-	private Time				timer;					;
+	private Timer				timer;
 
 	private boolean				fullscreen;
 	private int					displayWidth;
@@ -40,24 +32,24 @@ public class Game
 	private Game()
 	{
 		System.out.println("Initializing...");
-		//theGame = this;
 		this.isPaused = false;
 		this.isRunning = false;
-		timer = new Time(60F); //60 updates per second
+		timer = new Timer(120F); //60 updates per second
 		this.cam = new Camera(70, (float) Window.getWidth() / (float) Window.getHeight(), 0.3f, 1000);
 		//TODO init other fields
 	}
 
 	public void start()
 	{
-		System.out.println("Starting...");
 		if (isRunning) return;
+		System.out.println("Starting...");
 		run();
 	}
 
 	public void stop()
 	{
 		if (!isRunning) return;
+		System.out.println("Stopping...");
 		isRunning = false;
 	}
 
@@ -70,7 +62,7 @@ public class Game
 
 			if (this.isPaused)
 			{
-				//do something special
+				//TODO:do something special
 			} else
 			{
 				this.timer.updateTimer();
@@ -164,7 +156,6 @@ public class Game
 
 	public void update()
 	{
-		System.out.println("update");
 	}
 
 	public void input()
@@ -193,6 +184,24 @@ public class Game
 		if (InputManager.getKey(Keyboard.KEY_RIGHT))
 		{
 			cam.rotateY(0.25f);
+		}
+		if (InputManager.getKey(Keyboard.KEY_ESCAPE))
+		{
+			InputManager.unGrabMouseCursor();
+		}
+		if (InputManager.getKey(Keyboard.KEY_TAB))
+		{
+			InputManager.grabMouseCursor();
+		}
+		if (InputManager.mouseXYChange())
+		{
+			if (InputManager.deltaX < 0)
+			{ //if I moved the mouse left or right at all
+				cam.rotateY(-0.5f);
+			} else if (InputManager.deltaX > 0)
+			{
+				cam.rotateY(0.5f);
+			}
 		}
 	}
 

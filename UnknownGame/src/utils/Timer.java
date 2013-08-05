@@ -2,7 +2,7 @@ package utils;
 
 import render.Window;
 
-public class Time
+public class Timer
 {
 	public static final long	SECOND_NS	= 1000000000L;	//one second in nanoseconds
 	public static final long	SECOND_MS	= 1000L;		//one second in milliseconds
@@ -15,7 +15,7 @@ public class Time
 
 	//private long				lastSyncHRClock;
 
-	public Time(float tps)
+	public Timer(float tps)
 	{
 		this.tps = tps;
 		this.elapsedTicks = 0;
@@ -66,7 +66,7 @@ public class Time
 		long curr = System.currentTimeMillis();
 		elapsed += curr - prevTime;
 		prevTime = curr;
-		Window.setTitle(((((long) ticks) * Time.SECOND_MS) / elapsed) + " tps");
+		Window.setTitle(((((long) ticks) * Timer.SECOND_MS) / elapsed) + " tps");
 
 	}
 }
