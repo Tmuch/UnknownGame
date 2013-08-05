@@ -41,7 +41,7 @@ public class Timer
      * The time reported by the high-resolution clock at the last sync, in milliseconds
      */
     private long lastSyncHRClock;
-    private long field_74285_i;
+    private long delta;
 
     /**
      * A ratio used to sync the high-resolution clock to the system clock, updated once per second
@@ -67,18 +67,18 @@ public class Timer
 
         if (var3 <= 1000L && var3 >= 0L)
         {
-            this.field_74285_i += var3;
+            this.delta += var3;
 
-            if (this.field_74285_i > 1000L)
+            if (this.delta > 1000L)
             {
                 long var9 = var5 - this.lastSyncHRClock;
-                double var11 = (double)this.field_74285_i / (double)var9;
+                double var11 = (double)this.delta / (double)var9;
                 this.timeSyncAdjustment += (var11 - this.timeSyncAdjustment) * 0.20000000298023224D;
                 this.lastSyncHRClock = var5;
-                this.field_74285_i = 0L;
+                this.delta = 0L;
             }
 
-            if (this.field_74285_i < 0L)
+            if (this.delta < 0L)
             {
                 this.lastSyncHRClock = var5;
             }
