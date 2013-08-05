@@ -12,6 +12,8 @@ import input.InputManager;
 public class Game
 {
 
+	/* comment */
+
 	private static Game			theGame	= null;
 
 	volatile private boolean	isRunning;
