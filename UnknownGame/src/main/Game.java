@@ -1,6 +1,14 @@
 package main;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.util.ResourceLoader;
 
 import render.Camera;
 import render.Window;
@@ -14,9 +22,38 @@ public class Game
 
 	private Camera	cam;
 
+
+
+	/* Draw String testing */
+	TrueTypeFont	font;
+
+
 	public Game()
 	{
 		cam = new Camera(70, (float) Window.getWidth() / (float) Window.getHeight(), 0.3f, 1000);
+
+		/* Draw String testing */
+
+		Font awtFont = new Font("Arial", Font.BOLD, 24);
+		font = new TrueTypeFont(awtFont, false);
+
+		InputStream instream = ResourceLoader.getResourceAsStream("res/arial.ttf");
+		try
+		{
+			Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, instream);
+			awtFont2 = awtFont2.deriveFont(24f);
+		} catch (FontFormatException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
 	}
 
 	public void render()
@@ -77,6 +114,10 @@ public class Game
 			glEnd();
 		}
 		glPopMatrix();
+
+
+
+		//font.drawString(100, 50, "Hello there", Color.white);
 	}
 
 	public void update()

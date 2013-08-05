@@ -90,6 +90,7 @@ public class Main
 				elapsed += curr - prevTime;
 				prevTime = curr;
 				Window.setTitle(((((long) ticks) * Time.SECOND_MS) / elapsed) + " tps");
+				Window.setTitle(Window.getTitle() + " | " + ((((long) frames) * Time.SECOND_MS) / elapsed) + " fps");
 			} //end while
 
 
