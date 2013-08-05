@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.util.ResourceLoader;
 
