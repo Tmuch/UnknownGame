@@ -26,6 +26,7 @@ public class Main
 	{
 		isRunning = false;
 		ticks = 0;
+		frames = 0;
 	}
 
 	public void start()
@@ -47,12 +48,18 @@ public class Main
 		long lastTime = Time.getTime();
 		final double nsPerUpdate = Time.SECOND_NS / TPS; //nanoseconds between each update
 		double delta = 0;
-		frames = 0;
-		ticks = 0;
+
+		/* timer is used to trigger a fps and tps variable resets ever second to prevent overflowing */
 		long timer = System.currentTimeMillis(); //for tick and fps counter
 
+		/* Used for calculating tps and fps counters */
+		/* Can possibly be eventually replaced by just keeping a counter of how many ticks have occurred and once
+		 * that counter reaches TPS then trigger the variable reset. */
 		long prevTime = System.currentTimeMillis();
-		long elapsed = 1; //1 ms
+
+		/* 1 ms to prevent divide by zero when counters first begin.
+		 * Will have no significant impact on counters */
+		long elapsed = 1;
 
 		while (isRunning)
 		{
@@ -65,7 +72,11 @@ public class Main
 			while (delta >= 1)
 			{
 				update();
-				delta -= 1;
+				delta -= 1; //return to (near) 0
+
+
+				/* Calculate tps and fps values and display in game title
+				 * TODO: Display this on the screen with slickutils */
 				long curr = System.currentTimeMillis();
 				elapsed += curr - prevTime;
 				prevTime = curr;
@@ -76,12 +87,14 @@ public class Main
 
 			render();
 
+
 			if ((System.currentTimeMillis() - timer) > 1000)
 			{
+				/* Add 1 more second to timer */
 				timer += 1000;
-				ticks = frames = 0;
 
-				/* Reset tps and fps counters */
+				/* Reset variables used for tps and fps calculations */
+				ticks = frames = 0;
 				elapsed = 1;
 				prevTime = System.currentTimeMillis();
 			}
