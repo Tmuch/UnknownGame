@@ -50,4 +50,9 @@ public class Window
 		return Display.getTitle();
 	}
 
+	public static void setTitle(String t)
+	{
+		Display.setTitle(t);
+	}
+
 }
