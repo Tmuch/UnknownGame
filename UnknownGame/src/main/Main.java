@@ -3,6 +3,7 @@ package main;
 import input.InputManager;
 import render.Window;
 import utils.Time;
+import static org.lwjgl.opengl.GL11.*;
 
 public class Main
 {
@@ -11,7 +12,6 @@ public class Main
 	public static final int		HEIGHT	= 600;
 	public static final String	TITLE	= "GAME";
 	public static final int		TPS		= 150;		//ticks per second
-	private static InputManager	inman;
 	private boolean				isRunning;
 	public long					ticks;
 	public long					frames;
@@ -131,6 +131,9 @@ public class Main
 	private void render()
 	{
 		frames++;
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glLoadIdentity();
 		game.render();
 		Window.render();
 	}
