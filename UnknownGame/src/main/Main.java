@@ -1,5 +1,6 @@
 package main;
 
+import input.InputManager;
 import render.Window;
 import utils.Time;
 
@@ -10,16 +11,18 @@ public class Main
 	public static final int		HEIGHT	= 600;
 	public static final String	TITLE	= "GAME";
 	public static final int		TPS		= 150;		//ticks per second
+	private static InputManager	inman;
 	private boolean				isRunning;
 	public long					ticks;
 	public long					frames;
+	private Game				game;
 
 	public static void main(String[] args)
 	{
 		Window.createWindow(WIDTH, HEIGHT, TITLE);
 
-		Main game = new Main();
-		game.start();
+		Main m = new Main();
+		m.start();
 	}
 
 	public Main()
@@ -27,6 +30,7 @@ public class Main
 		isRunning = false;
 		ticks = 0;
 		frames = 0;
+		game = new Game();
 	}
 
 	public void start()
@@ -63,7 +67,11 @@ public class Main
 
 		while (isRunning)
 		{
+
 			if (Window.isCloseRequested()) stop();
+
+
+
 			long now = Time.getTime();
 			delta += (now - lastTime) / nsPerUpdate;
 			lastTime = now;
@@ -71,6 +79,7 @@ public class Main
 			/* Happens TPS times per second */
 			while (delta >= 1)
 			{
+				input();
 				update();
 				delta -= 1; //return to (near) 0
 
@@ -81,13 +90,14 @@ public class Main
 				elapsed += curr - prevTime;
 				prevTime = curr;
 				Window.setTitle(((((long) ticks) * Time.SECOND_MS) / elapsed) + " tps");
-			}
+			} //end while
 
 
 
 			render();
 
 
+			//if 1 second elapsed
 			if ((System.currentTimeMillis() - timer) > 1000)
 			{
 				/* Add 1 more second to timer */
@@ -97,9 +107,11 @@ public class Main
 				ticks = frames = 0;
 				elapsed = 1;
 				prevTime = System.currentTimeMillis();
-			}
+			} //end if 1 second elapsed
 
-		}
+		} //end while isRunning
+
+
 
 		cleanup();
 	}
@@ -107,11 +119,19 @@ public class Main
 	private void update()
 	{
 		ticks++;
+		game.update();
+	}
+
+	private void input()
+	{
+		InputManager.update();
+		game.input();
 	}
 
 	private void render()
 	{
 		frames++;
+		game.render();
 		Window.render();
 	}
 
