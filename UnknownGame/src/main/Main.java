@@ -134,7 +134,10 @@ public class Main
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
+
+		/* Game renders as well as all of its components */
 		game.render();
+		/* The window renders, actually displaying to the screen */
 		Window.render();
 	}
 
